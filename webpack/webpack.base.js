@@ -11,7 +11,7 @@ module.exports = {
     entry: path.resolve(__dirname, '../src/main.js'),
     output: {
         path: path.resolve(__dirname, '../dist'),
-        filename: '[name]_[chunkhash:8].js',
+        filename: 'js/[name]_[chunkhash:8].js',
     },
     resolve: {
         extensions: ['*', '.js', '.vue']
@@ -30,20 +30,16 @@ module.exports = {
             },
             //
             {
-                test: /.css$/,
+                test: /.(sa|sc|c)ss$/,
                 use: [MiniCssExtractPlugin.loader, 'css-loader', 'postcss-loader']
-            },
-            // 需要安装 sass-loader node-sass
-            {
-                test: /.scss$/,
-                use: [MiniCssExtractPlugin.loader, 'css-loader', 'sass-loader']
+                // use: ['style-loader', 'css-loader', 'postcss-loader']
             },
             /**
              * file-loader 解析 js引入图片、字体
              *      import logo from './images/logo.png'
              */
             {
-                test: /.(png|jpeg|jpg|svg)$/,
+                test: /.(png|jpeg|jpg)$/,
                 use: [
                     {
                         loader: "file-loader",
@@ -55,30 +51,24 @@ module.exports = {
                 ]
             },
             // 解析字体
-            {
-                test: /.(woff|svg|eot|ttf|otf)$/,
-                use: [
-                    {
-                        loader: 'file-loader',
-                        options: {
-                            outputPath: 'fonts',
-                            name: '[name]_[chunkhash:8].[ext]',
-                        }
-                    }
-                ]
-                // use: 'url-loader?limit=8192&name=[name]_[contenthash:8].[ext]'
-                // use: [
-                //     {
-                //         loader: "url-loader",
-                //         options: {
-                //             limit: 8192,
-                //             name: '[name]_[hash:8].[ext]',
-                //             outputPath: 'fonts',
-                //             publicPath: '/fonts/'
-                //         }
-                //     }
-                // ]
-            }
+            // {
+            //     test: /.(woff|svg|eot|ttf|otf)$/i,
+            //     use: [
+            //         {
+            //             loader: "file-loader",
+            //             options: {
+            //                 outputPath: 'fonts',
+            //                 esModule: false
+            //             }
+            //         }
+            //         // {
+            //         //     loader: 'url-loader',
+            //         //     options: {
+            //         //         limit: 8192
+            //         //     }
+            //         // }
+            //     ]
+            // }
         ]
     },
     plugins: [
@@ -87,6 +77,8 @@ module.exports = {
             template: 'public/index.html',
             filename: 'index.html'
         }),
-        new MiniCssExtractPlugin()
+        new MiniCssExtractPlugin({
+            filename: 'css/[name]_[contenthash:8].css'
+        })
     ]
 }
